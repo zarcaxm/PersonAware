@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PERSONWARE</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 50px;
+        }
+
+        form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin-bottom: 20px;
+        }
+
+        label,
+        select,
+        input[type="file"],
+        input[type="submit"] {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        label {
+            margin-bottom: 5px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+    <form action="/uploadfile/" enctype="multipart/form-data" method="post">
+        <label for="library">Librarias NER:</label>
+        <select name="library" id="library" required>
+            <option value="spaCy">spaCy</option>
+            <option value="NLTK">NLTK</option>
+            <option value="HFT">HFT</option>
+        </select>
+        <label for="file">Importar ficheiro:</label>
+        <input name="file" id="file" type="file" required>
+        <input type="submit" value="Enviar">
+    </form>
+</body>
+
+</html>
