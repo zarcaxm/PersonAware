@@ -27,13 +27,18 @@ PersonAware is a FastAPI-based application that allows users to upload text file
     ```
 
 - **Unoconv**:
- ```sh
+  ```sh
   sudo apt-get install unoconv
+  sudo apt-get install libreoffice
+    ```
+
+- **Soffice**:
+  ```sh
   sudo apt-get install libreoffice
   ```
 
 ## Start
-    ```sh
-    cd backend 
-    uvicorn app.main:app --reload --port 8090
-    ```
+  ```sh
+  cd backend 
+  uvicorn app.main:app --reload --port 8090
+  ```
