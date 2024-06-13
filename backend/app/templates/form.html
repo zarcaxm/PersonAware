@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PERSONWARE</title>
+    <title>NER Tool</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -56,18 +56,19 @@
 
 <body>
     <form action="/uploadfile/" enctype="multipart/form-data" method="post">
-        <label for="library">Librarias NER:</label>
+        <label for="library">Choose a library:</label>
         <select name="library" id="library" required>
             <option value="spaCy">spaCy</option>
             <option value="NLTK">NLTK</option>
             <option value="HFT">HFT</option>
         </select>
-        <label for="converter">Conversor de ficheiro:</label>
+        <label for="converter">Choose a converter:</label>
         <select name="converter" id="converter" required>
             <option value="pandoc">Pandoc</option>
             <option value="calibre">Calibre</option>
+            <option value="unoconv">Unoconv</option>
         </select>
-        <label for="file">Importar ficheiro:</label>
+        <label for="file">Choose a file:</label>
         <input name="file" id="file" type="file" required>
         <input type="submit" value="Enviar">
     </form>

@@ -1,11 +1,11 @@
+import os
+import subprocess
+import time
 from fastapi import APIRouter, File, UploadFile, Form
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from starlette.requests import Request
 from app.models import spacy_model, nltk_model, hft_model
-import pypandoc
-import time
-import subprocess
 
 router = APIRouter()
 
@@ -14,7 +14,7 @@ templates = Jinja2Templates(directory="app/templates")
 
 def convert_with_calibre(input_file: str, output_file: str) -> None:
     """
-    Conversão de ficheiro para plain text através de Calibre's ebook-convert tool.
+    Convert a file to plain text using Calibre's ebook-convert tool.
     """
     command = ["ebook-convert", input_file, output_file]
     subprocess.run(command, check=True)
@@ -22,14 +22,22 @@ def convert_with_calibre(input_file: str, output_file: str) -> None:
 
 def convert_with_pandoc(input_file: str, output_file: str) -> None:
     """
-    Conversão de ficheiro para plain text através de Pandoc.
+    Convert a file to plain text using Pandoc.
     """
     import pypandoc
     pypandoc.convert_file(input_file, 'plain', outputfile=output_file)
 
 
+def convert_with_unoconv(input_file: str, output_file: str) -> None:
+    """
+    Convert a file to plain text using unoconv.
+    """
+    command = ["unoconv", "-f", "txt", "-o", output_file, input_file]
+    subprocess.run(command, check=True)
+
+
 @router.post("/uploadfile/")
-async def upload_file(request: Request, file: UploadFile = File(...), library: str = Form(...)):
+async def upload_file(request: Request, file: UploadFile = File(...), library: str = Form(...), converter: str = Form(...)):
     file_location = f"./{file.filename}"
 
     with open(file_location, "wb") as f:
@@ -38,8 +46,14 @@ async def upload_file(request: Request, file: UploadFile = File(...), library: s
     output_file_location = file_location.rsplit('.', 1)[0] + '.txt'
 
     start_conversion_time = time.time()
-    pypandoc.convert_file(file_location, 'plain',
-                          outputfile=output_file_location)
+    if converter == 'calibre':
+        convert_with_calibre(file_location, output_file_location)
+    elif converter == 'pandoc':
+        convert_with_pandoc(file_location, output_file_location)
+    elif converter == 'unoconv':
+        convert_with_unoconv(file_location, output_file_location)
+    else:
+        return {"error": "Invalid converter chosen."}
     end_conversion_time = time.time()
     conversion_time = end_conversion_time - start_conversion_time
 
