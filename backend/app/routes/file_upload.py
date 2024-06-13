@@ -5,10 +5,27 @@ from starlette.requests import Request
 from app.models import spacy_model, nltk_model, hft_model
 import pypandoc
 import time
+import subprocess
 
 router = APIRouter()
 
 templates = Jinja2Templates(directory="app/templates")
+
+
+def convert_with_calibre(input_file: str, output_file: str) -> None:
+    """
+    Conversão de ficheiro para plain text através de Calibre's ebook-convert tool.
+    """
+    command = ["ebook-convert", input_file, output_file]
+    subprocess.run(command, check=True)
+
+
+def convert_with_pandoc(input_file: str, output_file: str) -> None:
+    """
+    Conversão de ficheiro para plain text através de Pandoc.
+    """
+    import pypandoc
+    pypandoc.convert_file(input_file, 'plain', outputfile=output_file)
 
 
 @router.post("/uploadfile/")
