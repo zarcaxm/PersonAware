@@ -17,7 +17,19 @@ PersonAware is a FastAPI-based application that allows users to upload text file
    cd PersonAware
     ```
 2. **Requirements**: 
+
+- **Calibre**: Install Calibre from the [official Calibre website](https://calibre-ebook.com/download).
+  Ensure that the `ebook-convert` command is accessible from your command line.
+
+- **Python**:
     ```sh
     pip install -r requirements.txt
     ```
 
+
+## Start
+
+    ```sh
+    cd backend 
+    uvicorn app.main:app --reload --port 8090
+    ```
