@@ -14,7 +14,7 @@ templates = Jinja2Templates(directory="app/templates")
 
 def convert_with_calibre(input_file: str, output_file: str) -> None:
     """
-    Convert a file to plain text using Calibre's ebook-convert tool.
+    Conversão de ficheiro para plain text através de Calibre's ebook-convert tool.
     """
     command = ["ebook-convert", input_file, output_file]
     subprocess.run(command, check=True)
@@ -22,7 +22,7 @@ def convert_with_calibre(input_file: str, output_file: str) -> None:
 
 def convert_with_pandoc(input_file: str, output_file: str) -> None:
     """
-    Convert a file to plain text using Pandoc.
+    Conversão de ficheiro para plain text através de Pandoc.
     """
     import pypandoc
     pypandoc.convert_file(input_file, 'plain', outputfile=output_file)
@@ -30,9 +30,18 @@ def convert_with_pandoc(input_file: str, output_file: str) -> None:
 
 def convert_with_unoconv(input_file: str, output_file: str) -> None:
     """
-    Convert a file to plain text using unoconv.
+    Conversão de ficheiro para plain text através de unoconv.
     """
     command = ["unoconv", "-f", "txt", "-o", output_file, input_file]
+    subprocess.run(command, check=True)
+
+
+def convert_with_soffice(input_file: str, output_file: str) -> None:
+    """
+    Conversão de ficheiro para plain text através de soffice.
+    """
+    command = ["soffice", "--headless", "--convert-to", "txt:Text",
+               "--outdir", os.path.dirname(output_file), input_file]
     subprocess.run(command, check=True)
 
 
@@ -52,8 +61,10 @@ async def upload_file(request: Request, file: UploadFile = File(...), library: s
         convert_with_pandoc(file_location, output_file_location)
     elif converter == 'unoconv':
         convert_with_unoconv(file_location, output_file_location)
+    elif converter == 'soffice':
+        convert_with_soffice(file_location, output_file_location)
     else:
-        return {"error": "Invalid converter chosen."}
+        return {"error": "Conversor inválido."}
     end_conversion_time = time.time()
     conversion_time = end_conversion_time - start_conversion_time
 
@@ -68,7 +79,7 @@ async def upload_file(request: Request, file: UploadFile = File(...), library: s
     elif library == 'HFT':
         entities = hft_model.process_with_hft(text_content)
     else:
-        return {"error": "Invalid library chosen."}
+        return {"error": "Biblioteca NER inválida."}
     end_processing_time = time.time()
     processing_time = end_processing_time - start_processing_time
 
