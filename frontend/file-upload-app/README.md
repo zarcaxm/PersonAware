@@ -42,3 +42,20 @@ This project demonstrates a simple file upload interface built with React that i
 
 ### Project Structure
 
+file-upload-frontend/
+├── public/
+│ ├── index.html
+│ └── ...
+├── src/
+│ ├── components/
+│ │ ├── FileUpload.js
+│ │ └── ...
+│ ├── App.js
+│ ├── App.css
+│ ├── index.js
+│ └── ...
+├── .gitignore
+├── package.json
+└── README.md
+
+
