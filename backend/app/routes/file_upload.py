@@ -1,7 +1,7 @@
 import os
 import subprocess
 import time
-from fastapi import APIRouter, File, UploadFile, Form
+from fastapi import APIRouter, File, HTTPException, UploadFile, Form
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from starlette.requests import Request
@@ -72,14 +72,17 @@ async def upload_file(request: Request, file: UploadFile = File(...), library: s
         text_content = f.read()
 
     start_processing_time = time.time()
-    if library == 'spaCy':
-        entities = spacy_model.process_with_spacy(text_content)
-    elif library == 'NLTK':
-        entities = nltk_model.process_with_nltk(text_content)
-    elif library == 'HFT':
-        entities = hft_model.process_with_hft(text_content)
-    else:
-        return {"error": "Biblioteca NER inválida."}
+    try:
+        if library == 'spaCy':
+            entities = spacy_model.process_with_spacy(text_content)
+        elif library == 'NLTK':
+            entities = nltk_model.process_with_nltk(text_content)
+        elif library == 'HFT':
+            entities = hft_model.process_with_hft(text_content)
+        else:
+            return {"error": "Biblioteca NER inválida."}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
     end_processing_time = time.time()
     processing_time = end_processing_time - start_processing_time
 
