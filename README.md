@@ -1,4 +1,4 @@
-# PersonAware NER Tool
+# PIxtract NER Tool
 
 PersonAware is a FastAPI-based application that allows users to upload text files and perform Named Entity Recognition (NER) using various libraries: spaCy, NLTK, and Hugging Face Transformers (HFT).
 
