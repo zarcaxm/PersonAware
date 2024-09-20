@@ -6,3 +6,4 @@ pypandoc
 spacy
 nltk
 transformers
+python-multipart

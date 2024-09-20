@@ -69,11 +69,11 @@
     <div class="results">
         <h2>Resultados para {{ filename }}</h2>
         <p>Tempo de conversão: {{ conversion_time | round(2) }} seconds</p>
-        <p>Tempo de conversão: {{ processing_time | round(2) }} seconds</p>
-        <h3>Entities:</h3>
+        <p>Tempo de processamento: {{ processing_time | round(2) }} seconds</p>
+        <h3>Entidades:</h3>
         <table border="1">
             <tr>
-                <th>Text</th>
+                <th>Texto</th>
                 <th>Label</th>
             </tr>
             {% for entity in entities %}
@@ -83,7 +83,7 @@
             </tr>
             {% endfor %}
         </table>
-        <button onclick="window.location.href='/';">Back to Main Page</button>
+        <button onclick="window.location.href='/';">Página Principal</button>
     </div>
 </body>
 
