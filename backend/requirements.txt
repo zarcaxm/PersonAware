@@ -7,3 +7,6 @@ spacy
 nltk
 transformers
 python-multipart
+sqlalchemy asyncpg 
+databases
+python-dotenv
