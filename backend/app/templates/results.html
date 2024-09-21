@@ -63,6 +63,64 @@
             background-color: #45a049;
         }
     </style>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 50px;
+        }
+
+        .results {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 800px;
+            margin-bottom: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 
 <body>
@@ -71,29 +129,72 @@
         <p>Tempo de conversão: {{ conversion_time | round(2) }} seconds</p>
         <p>Tempo de processamento: {{ processing_time | round(2) }} seconds</p>
         <h3>Entidades:</h3>
-        <table border="1">
-            <tr>
-                <th>Texto</th>
-                <th>Label</th>
-            </tr>
-            {% for entity in entities %}
-            <tr>
-                <td>{{ entity[0] }}</td>
-                <td>{{ entity[1] }}</td>
-            </tr>
-            {% endfor %}
+        <table id="entities-table">
+            <thead>
+                <tr>
+                    <th>Texto</th>
+                    <th>Label</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <!-- Rows will be dynamically added here -->
+            </tbody>
         </table>
-        <button onclick="window.location.href='/';">Página Principal</button>
+
+        <div id="pagination-controls">
+            <button id="prev-page" disabled>Previous</button>
+            <span id="page-info"></span>
+            <button id="next-page">Next</button>
+        </div>
+
         <button id="exportButton">Exportar Tabela</button>
     </div>
 
     <script type="application/json" id="entities-data">{{ entities | tojson | safe }}</script>
 
     <script>
-        document.getElementById("exportButton").addEventListener("click", function () {
-            const dataEntities = JSON.parse(document.getElementById("entities-data").textContent);
-            let csvContent = "data:text/csv;charset=utf-8,Texto,Label\n";
+        let currentPage = 1;
+        const rowsPerPage = 10;
 
+        const dataEntities = JSON.parse(document.getElementById("entities-data").textContent);
+
+        function displayEntities(page) {
+            const tableBody = document.getElementById("table-body");
+            tableBody.innerHTML = "";
+
+            const start = (page - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            const paginatedEntities = dataEntities.slice(start, end);
+
+            paginatedEntities.forEach(function (entity) {
+                const row = `<tr><td>${entity[0]}</td><td>${entity[1]}</td></tr>`;
+                tableBody.insertAdjacentHTML('beforeend', row);
+            });
+
+            document.getElementById("page-info").textContent = `Page ${currentPage} of ${Math.ceil(dataEntities.length / rowsPerPage)}`;
+
+            document.getElementById("prev-page").disabled = currentPage === 1;
+            document.getElementById("next-page").disabled = currentPage === Math.ceil(dataEntities.length / rowsPerPage);
+        }
+
+        document.getElementById("prev-page").addEventListener("click", function () {
+            if (currentPage > 1) {
+                currentPage--;
+                displayEntities(currentPage);
+            }
+        });
+
+        document.getElementById("next-page").addEventListener("click", function () {
+            if (currentPage < Math.ceil(dataEntities.length / rowsPerPage)) {
+                currentPage++;
+                displayEntities(currentPage);
+            }
+        });
+
+        displayEntities(currentPage);
+
+        document.getElementById("exportButton").addEventListener("click", function () {
+            let csvContent = "data:text/csv;charset=utf-8,Texto,Label\n";
             dataEntities.forEach(function (entity) {
                 let row = entity.join(",");
                 csvContent += row + "\n";
