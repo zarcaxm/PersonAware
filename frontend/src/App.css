@@ -1,0 +1,66 @@
+.header{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ 
+}
+
+.head{
+  width: 400px;
+  height: 250px;
+  padding-top: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.box{
+  width:400px;
+  height:200px;
+  padding-left: 5%;
+  background-color:darkgrey;
+}
+
+.input{
+  padding: 0.5%;
+}
+
+.lib{
+ padding:1.5%;
+ font-family: Arial;
+ font-weight: 500;
+ font-size:90%;
+}
+
+.library{
+  width: 120px;
+  height: 22px;
+}
+
+.file{
+  padding: 1.5%;
+  border-radius: 5%;
+  width: 250px;
+  height: 25px;
+  margin-top: 8px;
+}
+
+.submit{
+  padding-left: 1.2%;
+  width: 350px;
+  height: 25px;
+  border-radius: 5px;
+  border-color: antiquewhite;
+  margin-top: 6px;
+}
+
+.error{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 10%;
+  font-family: sans-serif;
+  font-size: 12px;
+}
